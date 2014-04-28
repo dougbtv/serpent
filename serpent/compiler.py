@@ -345,6 +345,7 @@ def tobytearr(n, L):
 
 # Dereference labels
 def dereference(c):
+    print "!trace BEFORE DEREFERENCE: ", c, "\n\n"
     iq = [x for x in c]
     mq = []
     pos = 0
@@ -352,6 +353,7 @@ def dereference(c):
     while len(iq):
         front = iq.pop(0)
         if isinstance(front, str) and front[:6] == 'LABEL_':
+            print "!trace label pos: ", front[6:], pos
             labelmap[front[6:]] = pos
         else:
             mq.append(front)
@@ -372,6 +374,7 @@ def dereference(c):
             oq.extend(tobytearr(m, L))
         else:
             oq.append(m)
+    print "!trace AFTER DEREFERENCE: ", oq
     return oq
 
 

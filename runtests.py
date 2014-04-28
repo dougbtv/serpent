@@ -17,7 +17,9 @@ while 1:
     aevm = compiler.compile_to_assembly(text)
     print "AEVM:",' '.join([str(x) for x in aevm])
     print ""
+    print "!trace ending here --------------------- no extra compile. remove this."
     code = compiler.compile(text)
-    print "Output:",code.encode('hex')
+    # print "!trace compiled here ----------------------------- \n", code
+    # print "Output:",code.encode('hex')
     if i >= len(t):
         break

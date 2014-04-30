@@ -141,6 +141,7 @@ def numberize(b):
 
 # Apply rewrite rules
 def rewrite(ast):
+    print "!trace rewrite ast INBOUND: ",ast
     if isinstance(ast, (str, unicode)):
         return ast
     elif ast[0] == 'set':
@@ -209,6 +210,7 @@ def compile_expr(ast, varhash, lc=[0]):
             return [varhash[ast], 'MLOAD']
     # Set (specifically, variables)
     elif ast[0] == 'set':
+        print "!trace ast in set: ",ast,"\n\n"
         if not isinstance(ast[1], (str, unicode)):
             raise Exception("Cannot set the value of " + str(ast[1]))
         elif ast[1] in pseudovars:
@@ -319,9 +321,13 @@ def compile_to_assembly(source, optimize_flag=1):
         source = parse(source)
     varhash = {}
     c1 = rewrite(source)
+    print "!trace after rewrite:    ",c1,"\n\n"
     c2 = compile_expr(c1, varhash, [0])
+    print "!trace after compile:    ",c2,"\n\n"
     c3 = add_wrappers(c2, varhash)
+    print "!trace after wrappers:   ",c3,"\n\n"
     c4 = optimize(c3) if optimize_flag else c3
+    print "!trace after optimze:    ",c4,"\n\n"
     return c4
 
 
@@ -353,7 +359,7 @@ def dereference(c):
     while len(iq):
         front = iq.pop(0)
         if isinstance(front, str) and front[:6] == 'LABEL_':
-            print "!trace label pos: ", front[6:], pos
+            # print "!trace label pos: ", front[6:], pos
             labelmap[front[6:]] = pos
         else:
             mq.append(front)
@@ -374,11 +380,12 @@ def dereference(c):
             oq.extend(tobytearr(m, L))
         else:
             oq.append(m)
-    print "!trace AFTER DEREFERENCE: ", oq
+    print "!trace AFTER DEREFERENCE: ", oq, "\n\n"
     return oq
 
 
 def serialize(source):
+    print "!trace serialized source: ",source,"\n\n"
     def numberize(arg):
         if isinstance(arg, (int, long)):
             return arg
@@ -390,7 +397,9 @@ def serialize(source):
             return int(arg)
         else:
             raise Exception("Cannot serialize: " + str(arg))
-    return ''.join(map(chr, map(numberize, source)))
+    numbered = map(numberize, source)
+    print "!trace numbered: ", numbered,"\n\n"
+    return ''.join(map(chr, numbered))
 
 
 def deserialize(source):

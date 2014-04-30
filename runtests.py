@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import sys
 from serpent import compiler
 t = open('tests.txt').readlines()
 i = 0
@@ -17,9 +18,11 @@ while 1:
     aevm = compiler.compile_to_assembly(text)
     print "AEVM:",' '.join([str(x) for x in aevm])
     print ""
-    print "!trace ending here --------------------- no extra compile. remove this."
     code = compiler.compile(text)
     # print "!trace compiled here ----------------------------- \n", code
-    # print "Output:",code.encode('hex')
+    print "Output:",code.encode('hex'),"\n\n"
+    # print compiler.deserialize("600a60005460146020546020536000530160405460286040530b0d630000002a59600a604053026060546032608054");
+    sys.exit(0)
     if i >= len(t):
         break
+

@@ -139,7 +139,7 @@ def numberize(b):
 
 # Apply rewrite rules
 def _rewrite(ast):
-    print "!trace rewrite ast INBOUND: ",ast
+    # print "!trace rewrite ast INBOUND: ",ast
     if isinstance(ast, (str, unicode)):
         return ast
     elif ast[0] == 'set':
@@ -215,7 +215,7 @@ def compile_expr(ast, varhash, lc=[0]):
             return [varhash[ast], 'MLOAD']
     # Set (specifically, variables)
     elif ast[0] == 'set':
-        print "!trace ast in set: ",ast,"\n\n"
+        # print "!trace ast in set: ",ast,"\n\n"
         if not isinstance(ast[1], (str, unicode)):
             raise Exception("Cannot set the value of " + str(ast[1]))
         elif ast[1] in pseudovars:
